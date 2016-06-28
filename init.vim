@@ -1,3 +1,4 @@
+
 call plug#begin('~/.vim/plugged')
 
 " Make sure you use single quotes
@@ -17,6 +18,31 @@ Plug 'itchyny/lightline.vim'
 Plug 'JuliaLang/julia-vim'
 "Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'benekastah/neomake'
+Plug 'majutsushi/tagbar'
+Plug 'fholgado/minibufexpl.vim'
+Plug 'Lokaltog/vim-easymotion'
+Plug 'scrooloose/nerdcommenter'
+Plug 'Raimondi/delimitMate'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'godlygeek/tabular'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
+Plug 'racer-rust/vim-racer'
+Plug 'rust-lang/rust.vim'
+Plug 'scrooloose/nerdtree'
+Plug 'Shougo/vimproc.vim', { 'do': 'cd ~/.config/nvim/plugged/vimproc.vim && make -f make_unix.mak' }
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'tacahiroy/ctrlp-funky', { 'on': 'CtrlPFunky' }
+Plug 'Shougo/neomru.vim'
+Plug 'Shougo/unite-outline'
+Plug 'Shougo/unite-session'
+Plug 'Shougo/unite.vim'
+Plug 'sgur/unite-qf'
+Plug 'baabelfish/nvim-nim'
+Plug 'dyng/ctrlsf.vim'
+Plug 'mileszs/ack.vim'
+Plug 'lambdalisue/unite-grep-vcs'
+Plug 'tsukkee/unite-help'
 " Add plugins to &runtimepath
 call plug#end()
 " Use deoplete.
@@ -97,10 +123,6 @@ set previewheight=20
 set noshowmode
 set laststatus=2
 
-if !has('gui_running')
-  set visualbell
-  set t_vb=
-endif
 
 " -------------------------------------------------------------------------------
 " Folding
@@ -183,8 +205,76 @@ set statusline+=%*
 let g:neomake_always_populate_loc_list = 1
 let g:neomake_auto_loc_list = 0
 let g:neomake_check_on_open = 1
-" autocmd! BufWritePost * Neomake
-let g:neomake_check_on_wq = 0
-let g:neomake_mode_map = { 'passive_filetypes': ['d'] }
-let g:neomake_html_tidy_exec = '/usr/local/bin/tidy -config ~/.config/tidy/tidy.conf' " Override for HTML5 tidy
-let g:neomake_html_tidy_blocklevel_tags = ['nav']
+
+" tagbar
+nmap <leader>tb :TagbarToggle<CR> 
+let g:tagbar_autofocus = 1
+let g:miniBufExplMapWindowNavVim    = 1
+let g:miniBufExplMapWindowNavArrows = 1
+let g:miniBufExplMapCTabSwitchBufs  = 1
+let g:miniBufExplModSelTarget       = 1
+let g:miniBufExplForceSyntaxEnable = 1
+let g:miniBufExplorerMoreThanOne=2
+let g:miniBufExplCycleArround=1
+" rust
+let g:rustfmt_autosave = 1
+set hidden
+let g:racer_cmd = "/home/summer/.cargo/bin/racer"
+let $RUST_SRC_PATH = "/home/summer/git/rust-lang/src/"
+
+" nerdtree
+nmap <leader>nt :NERDTree<CR>
+let NERDTreeHighlightCursorline=1
+let NERDTreeIgnore=[ '\.pyc$', '\.pyo$', '\.obj$', '\.o$', '\.so$', '\.egg$', '^\.git$', '^\.svn$', '^\.hg$' ]
+let g:netrw_home='~/bak'
+"close vim if the only window left open is a NERDTree
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | end
+let g:ctrlsf_default_root = 'project'
+let g:ctrlsf_mapping = {
+      \ "open"    : ["<CR>", "o"],
+      \ "openb"   : "O",
+      \ "split"   : "<C-O>",
+      \ "tab"     : "t",
+      \ "tabb"    : "T",
+      \ "popen"   : "p",
+      \ "quit"    : "Q",
+      \ "next"    : "<C-J>",
+      \ "prev"    : "<C-K>",
+      \ "pquit"   : "Q",
+      \ "loclist" : "",
+      \ }
+call unite#filters#sorter_default#use(['sorter_length'])
+call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep',
+      \ 'ignore_pattern', join([
+      \ '\.git/',
+      \ '\.tscache/',
+      \ 'git5/.*/review/',
+      \ 'google/obj/',
+      \ 'tmp/',
+      \ 'lib/Cake/',
+      \ 'node_modules/',
+      \ 'vendor/',
+      \ 'Vendor/',
+      \ 'app_old/',
+      \ 'acf-laravel/',
+      \ 'plugins/',
+      \ 'bower_components/',
+      \ '.sass-cache',
+      \ 'web/wp',
+      \ 'nimcache',
+      \ '.toc$',
+      \ '.bak$',
+      \ '.log$',
+      \ '.out$',
+      \ '.aux$',
+      \ '.a$',
+      \ '.o$',
+      \ '.obj$',
+      \ '.so$',
+      \ '.png$',
+      \ '.jpg$',
+      \ '.lib$',
+      \ '.jar$',
+      \ '.pdf$'
+\ ], '\|'))
+let g:nvim_nim_exec_nimsuggest = '/home/summer/.nimble/bin/nimsuggest'
