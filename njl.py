@@ -12,4 +12,5 @@ x, y = p
 intg1 = fixed_quad(myfunc, 0, 0.6, args=(x, y))
 intg2 = fixed_quad(myfunc, 0.9, 1, args=(x, y))
 return (intg1[0] - 0.05, intg2[0] - 0.05)
-xr, yr = fsolve(equations, (1, 1)) print equations((xr, yr))
+xr, yr = fsolve(equations, (1, 1))
+print equations((xr, yr))
